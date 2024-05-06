@@ -5,16 +5,9 @@ namespace App\Database\ActiveRecord;
 use App\Database\Connection\Connection;
 use App\Database\Interfaces\ActiveRecordExecuteInterface;
 use App\Database\Interfaces\ActiveRecordInterface;
-use PDO;
 
-class Insert implements ActiveRecordExecuteInterface
+class Insert extends Base implements ActiveRecordExecuteInterface
 {
-    protected ?PDO $pdo;
-
-    public function __construct()
-    {
-        $this->pdo = Connection::connect();
-    }
     public function execute(ActiveRecordInterface $record)
     {
         $sql = "INSERT INTO {$record->getTable()} (";
