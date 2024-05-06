@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    volumes:
+      - ./:/var/www
+    container_name: active_record_app
+    networks:
+      - active_record
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    container_name: active_record_nginx
+    networks:
+      - active_record
+
+  database:
+    image: mysql
+    volumes:
+      - ./.database/:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=active_record
+    container_name: active_record_database
+    networks:
+      - active_record
+
+networks:
+  active_record:
+    driver: bridge
